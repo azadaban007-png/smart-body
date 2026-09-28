@@ -76,6 +76,9 @@ class RegistrationService:
             })
             return WordPressSync(status="synced", postId=post.get("id"), postStatus=post.get("status"),
                                  editLink=post.get("editLink"), updatedAt=_now())
-        except (WordPressError, Exception) as exc:  # storage/network errors must not break the local record
+        except WordPressError as exc:
             logger.warning("WordPress sync failed for registration %s: %s", reg.id, exc)
+            return WordPressSync(status="failed", error=str(exc)[:300], updatedAt=_now())
+        except Exception as exc:  # storage errors must not break the local record
+            logger.exception("Unexpected sync error for registration %s", reg.id)
             return WordPressSync(status="failed", error=str(exc)[:300], updatedAt=_now())

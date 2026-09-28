@@ -1,0 +1,29 @@
+{
+  "summary": "Iteration 2: WordPress integration end-to-end. All 35 backend pytest tests pass (16 new WP tests + 19 iteration-1 regression). Verified: /api/integrations/wordpress/status returns configured=true, canWrite=true, reachable=true, pluginVersion=1.0.0, activeSource=wordpress. Catalog endpoints /api/cities, /api/sports, /api/gyms, /api/gyms/{slug} all return X-Data-Source: wordpress with same JSON shape as before. Persian search works (همدان+بوعلی→energy, اصفهان+چهار باغ→aseman, sport=yoga filter, /api/gyms/nope→404). Registration E2E: upload PNG → POST /api/registrations (Persian digits normalised to 09123456789) returns 201 with wpSync.status='pending'; within ~2s a background task pushes to WP, wpSync becomes 'synced' with real postId + editLink. Verified in WP via /wp-json/smartbody/v1/registrations: post is pending with city term همدان, both sport terms (bodybuilding+yoga), managerName, landingPageStatus='requested', featured image attached. Re-syncing an already-synced record returns unchanged (no duplicate). Invalid registration id (both ObjectId-format and non-ObjectId) → 404. Validation via active catalog: unknown city 422, unknown sport 422, bad phone 422, unknown imagePath 400. Approval flow: publishing WP post 19 (wp post update --post_status=publish) made TEST_WP_DOWN appear in /api/gyms?city=همدان; reverted to pending afterwards. Fallback: killed php server, /api/gyms responded in ~240ms with X-Data-Source: sample and 10 sample gyms, status endpoint reported reachable=false with error 'WordPress unreachable: All connection attempts failed'. New registration while WP down was saved locally, background sync ended in wpSync.status='failed' with error message; retry via POST /registrations/{id}/sync returned failed gracefully (no crash). Restarted WP with nohup php -S; the write-path is not gated by the 60s catalog cooldown, so retry immediately succeeded (wpSync='synced', postId=19); after a successful write, _down_until is reset so subsequent catalog reads returned X-Data-Source: wordpress immediately. Plugin PHP sanity: `wp eval do_action(admin_menu)` completed with OK; /opt/wptest/server.log has no fatal/parse errors. Frontend /admin: wp-status-banner shows 'متصل به وردپرس' with data-source='wordpress' attribute; 6 registration-wp-sync-badge rendered; 5 registration-wp-edit-link (synced rows) and 1 registration-wp-sync-retry (the old failed record); clicking retry triggered POST /sync and the badge stayed 'ارسال‌شده به وردپرس' with toast 'در وردپرس ثبت شد'. Regression on Persian RTL UI at 1440px: homepage hero+top gyms carousel (8 cards) OK, /search?city=همدان&q=بوعلی shows gym-result-energy, /gym/energy renders 'باشگاه انرژی', /register shows the full form. WP server is left running at http://localhost:8090 as required.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/backend/tests/test_wordpress_integration.py",
+    "/app/test_reports/pytest/results.xml",
+    "/app/test_reports/pytest/wp_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py still uses deprecated @app.on_event startup/shutdown (FastAPI recommends lifespan); non-blocking.",
+    "wordpress.py.list_gyms is not cached (only cities/sports are). For high-traffic setups, add a short TTL cache with filter-aware key or the catalog will hammer WP.",
+    "registrations._push catches generic Exception via `(WordPressError, Exception)`; the WordPressError branch is redundant and swallowing everything can hide programming bugs (e.g., storage.get_object errors). Consider logging with traceback or narrower catch.",
+    "WordPress writes (upload_media / create_registration) bypass the DOWN cooldown - a spammed sync while WP is down will send many requests. Consider honoring self.available for writes too, or exponential backoff.",
+    "sample fallback is only triggered by _mark_down on failure; there is no health-probe warmup, so the very first request after WP goes offline pays the full timeout (~6s) before fallback kicks in. A background probe on startup + periodic recheck would smooth this."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_wordpress_integration.py"
+  ],
+  "success_rate": {"backend": "100% (35/35 tests)", "frontend": "100% (admin banner, sync badges, retry, edit links, homepage, search, detail, register all verified)"},
+  "test_credentials": "WP admin/Admin12345! + application password /opt/wptest/app_password.txt (already in backend/.env). No app-level auth.",
+  "seed_data_creation": "Created 2 extra WP-synced registrations: TEST_WP_باشگاه سینک (id=17, pending) and TEST_WP_DOWN (id=19, pending — was briefly published for approval-flow verification then reverted).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend URL from frontend/.env is https://active-platform-test.preview.emergentagent.com. WP runs at http://localhost:8090 via `php -S`; if you kill it for fallback tests you MUST restart it (nohup php -S 0.0.0.0:8090 -t /opt/wptest/wordpress > /opt/wptest/server.log 2>&1 &). WP images referenced by http://localhost:8090 fail to load in the preview browser — expected. Writes bypass DOWN cooldown; a successful write resets _down_until so catalog immediately returns to wordpress source. RegistrationDoc.id is a Mongo ObjectId string, and /sync accepts both ObjectId-format and arbitrary strings, both non-existent → 404. Sports/cities/gyms cache TTL in wordpress.py is 300s except list_gyms which isn't cached.",
+  "rca of the issue": "N/A - no bugs found."
+}

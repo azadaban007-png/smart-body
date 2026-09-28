@@ -26,7 +26,16 @@ User note: "Build the project with a clean, scalable architecture so it can late
 - Admin list with stats, tabs, search
 - Tested: backend 100%, frontend 100% (iteration_1)
 
+## WordPress Integration (2026-06, iteration_2 passed 100%)
+- Plugin /app/wordpress/smart-body-core (+ smart-body-core.zip), no ACF: CPT `gym`, taxonomies `city`/`sport`, gym meta, REST `smartbody/v1` (status, cities, sports, gyms, gyms/{slug}, registrations GET/POST via Application Password)
+- wp-admin: gym fields meta box, columns, landing-page status filter, "در انتظار تأیید" + "درخواست‌های لندینگ پیج" menus, "تأیید و انتشار" row action, term meta UI (province, sport image/featured/order), tools page with idempotent sample import (sample-data.json generated from backend seed via /app/scripts/export_wp_sample_data.py)
+- Backend: wordpress.py (client, 60s down-cooldown, 5-min catalog cache), repository.py (WP first → sample fallback, X-Data-Source header), registrations.py (local outbox + background push to WP as pending post with media upload, idempotent externalId, retry endpoint), GET /api/integrations/wordpress/status
+- Env: WP_BASE_URL, WP_USERNAME, WP_APP_PASSWORD, WP_TIMEOUT_SECONDS (currently empty → sample data)
+- Admin /admin: WP status banner, per-registration sync badge, retry, edit-in-WP link
+
 ## Backlog
-- P1: Admin approve → publish registration as gym listing; admin auth
-- P1: WordPress REST adapter swap (ACF field mapping)
+- P0: User to provide real WP URL + Application Password; install plugin on real site
+- P1: Admin auth for /admin
+
+## Backlog
 - P2: Map view of results, gym gallery, rate limiting on uploads/registrations
