@@ -45,3 +45,7 @@ export const uploadImage = async (file) => {
 export const createRegistration = async (payload) => (await client.post("/registrations", payload)).data;
 
 export const getRegistrations = async () => (await client.get("/registrations")).data;
+
+export const syncRegistration = async (id) => (await client.post(`/registrations/${id}/sync`)).data;
+
+export const getWordPressStatus = async () => (await client.get("/integrations/wordpress/status")).data;
