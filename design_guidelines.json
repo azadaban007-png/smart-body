@@ -1,0 +1,197 @@
+{
+  "project_name": "Smart Body (بدن هوشمند)",
+  "app_type": "hybrid_fullstack / marketing_site",
+  "direction": "rtl",
+  "locale": "fa-IR",
+  "font_family": "Vazirmatn, sans-serif",
+  "visual_style": {
+    "theme_inspiration": "Editorial Travel Agency meets Premium Modern Athletic Tech",
+    "key_traits": [
+      "Editorial & Cinematic visual hierarchy",
+      "Spacious generous layout with wide margins and breathing room",
+      "Soft rounded corners (xl to 2xl radius) with refined 1px subtle borders",
+      "Subtle glassmorphism and frosted layers for high depth",
+      "Dynamic snap carousels and smooth horizontal swipe strips",
+      "Pure Persian typography (Vazirmatn) with numerical and structural clarity",
+      "Full Light and Dark mode dual personality"
+    ]
+  },
+  "colors": {
+    "light": {
+      "primary": "#1597E5",
+      "deep_blue": "#0878C4",
+      "sport_cyan": "#23B6C9",
+      "background": "#F5F9FC",
+      "surface": "#FFFFFF",
+      "text_main": "#10243A",
+      "text_muted": "#667789",
+      "border": "#DCE8EF",
+      "card_hover_shadow": "0 20px 30px -10px rgba(8, 120, 196, 0.08)",
+      "glass_bg": "rgba(255, 255, 255, 0.75)",
+      "glass_border": "rgba(220, 232, 239, 0.8)"
+    },
+    "dark": {
+      "primary": "#1597E5",
+      "deep_blue": "#0878C4",
+      "sport_cyan": "#23B6C9",
+      "background": "#07131E",
+      "surface": "#0D202E",
+      "surface_secondary": "#102A3B",
+      "text_main": "#F4F9FC",
+      "text_muted": "#8BA0B2",
+      "border": "#1B364A",
+      "card_hover_shadow": "0 20px 30px -10px rgba(0, 0, 0, 0.5)",
+      "glass_bg": "rgba(13, 32, 46, 0.75)",
+      "glass_border": "rgba(27, 54, 74, 0.8)"
+    }
+  },
+  "typography": {
+    "font_family": "Vazirmatn, system-ui, sans-serif",
+    "weights": {
+      "light": "300",
+      "regular": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "black": "900"
+    },
+    "hierarchy": {
+      "eyebrow": "text-xs sm:text-sm font-semibold tracking-wider text-[#23B6C9] uppercase mb-2",
+      "h1_hero": "text-3xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-[#10243A] dark:text-[#F4F9FC]",
+      "h2_section": "text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#10243A] dark:text-[#F4F9FC]",
+      "h3_card": "text-lg sm:text-xl font-bold text-[#10243A] dark:text-[#F4F9FC]",
+      "body_lg": "text-base sm:text-lg text-[#667789] dark:text-[#8BA0B2] leading-relaxed",
+      "body_sm": "text-xs sm:text-sm text-[#667789] dark:text-[#8BA0B2]",
+      "badge": "text-xs font-bold px-3 py-1 rounded-full"
+    }
+  },
+  "layout_and_grid": {
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "section_spacing": "py-16 md:py-24",
+    "card_border_radius": "rounded-2xl md:rounded-3xl",
+    "horizontal_strip_padding": "px-4 sm:px-6 py-4 gap-4",
+    "bento_grid": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+  },
+  "components_breakdown": {
+    "header": {
+      "style": "Sticky glassmorphism navigation header with backdrop blur, shrinking height on scroll",
+      "navigation_items": [
+        "صفحه اصلی",
+        "رشته‌های ورزشی",
+        "باشگاه‌ها",
+        "خدمات",
+        "درباره ما"
+      ],
+      "actions": [
+        "Theme toggle (Light/Dark with localStorage persistence)",
+        "CTA button: 'ثبت باشگاه' (Register Gym)"
+      ],
+      "branding": "Abstract athletic symbol logo + Persian wordmark 'بدن هوشمند' on right side"
+    },
+    "hero": {
+      "style": "Cinematic editorial gym background with off-center athletic focal point, dark gradient scrim overlay for text contrast",
+      "eyebrow": "پلتفرم هوشمند ورزش و باشگاه‌ها",
+      "headline": "بهترین باشگاه‌ها، نزدیک‌ترین نقطه به تو",
+      "description": "دسترسی فوری به برترین مجموعه‌های ورزشی کشور، رزرو آنلاین کلاس‌ها و برنامه‌های اختصاصی تناسب اندام.",
+      "floating_search": {
+        "style": "Glassmorphic floating panel resting at bottom hero / overlap section",
+        "inputs": [
+          "City Dropdown Select (تهران، همدان، اصفهان، شیراز، تبریز، مشهد، کرج، رشت)",
+          "Location Text Input ('خیابان، محله یا محدوده را وارد کنید')",
+          "CTA Button: 'جستجو' (Search)"
+        ]
+      }
+    },
+    "sports_discipline_strip": {
+      "style": "Single horizontal compact swipeable strip with snap alignment and subtle scroll controls",
+      "items": [
+        "بدنسازی",
+        "فیتنس",
+        "یوگا",
+        "شنا",
+        "فوتبال",
+        "بوکس",
+        "ورزش‌های رزمی",
+        "کراس‌فیت",
+        "سایر رشته‌ها"
+      ]
+    },
+    "top_gyms_carousel": {
+      "title": "باشگاه‌های برتر",
+      "subtitle": "محبوب‌ترین و مجهزترین مجموعه‌های ورزشی انتخاب شده توسط ورزشکاران",
+      "card_structure": "Image with optional 'پیشنهاد ویژه' badge, Gym Name, City + Neighborhood, Sports tags, Star Rating, Arrow action link",
+      "responsive_behavior": "Horizontal snap carousel (1 card + peek on mobile, 3-4 visible on desktop)"
+    },
+    "search_results_interface": {
+      "style": "Interactive grid & list view driven by the same gym dataset with filters for city, neighborhood, and sports discipline"
+    },
+    "services_section": {
+      "title": "خدمات بدن هوشمند",
+      "card_style": "4 visually rich custom cards (AI services, web design, shop & custom print, promotion)",
+      "avoid": "Avoid standard 3-column SaaS icon grid. Use editorial photo backgrounds, gradient accents, and structured feature pills."
+    },
+    "gym_owner_cta": {
+      "headline": "باشگاهت را به هزاران ورزشکار معرفی کن",
+      "description": "با عضویت در بدن هوشمند، مدیریت سانس‌ها، مشتریان و تبلیغات باشگاه خود را کاملاً هوشمند و آنلاین کنید.",
+      "button": "ثبت اطلاعات باشگاه",
+      "style": "Cinematic dark section with glowing subtle cyan background glow and high contrast typography"
+    },
+    "gym_registration_page": {
+      "form_fields": [
+        "نام باشگاه (Gym Name)",
+        "نام مدیر (Manager Name)",
+        "شماره تماس (Phone Number)",
+        "شهر (City select)",
+        "آدرس کامل (Full Address)",
+        "محله / محدوده (Neighborhood)",
+        "تصویر اصلی باشگاه (Main Image Upload dropzone)",
+        "رشته‌های ورزشی (Sports Multi-select tags)",
+        "آیا لندینگ پیج اختصاصی باشگاه خود را می‌خواهید؟ (Dedicated Landing Page Yes/No Toggle)"
+      ]
+    },
+    "gym_detail_page": {
+      "route": "/gym/:id",
+      "sections": [
+        "Cinematic Hero Gallery & Header",
+        "Gym Overview & Amenities",
+        "Available Sports & Disciplines",
+        "Working Hours & Schedules",
+        "Location Map Placeholder & Address",
+        "Manager Contact & Direct Booking CTA"
+      ]
+    },
+    "admin_registrations_list": {
+      "route": "/admin",
+      "style": "Clean, dense Iranian admin list/table with status badges, detail modal, and quick search"
+    },
+    "footer": {
+      "style": "Editorial dark contrast footer with column navigation, quick contact info, and newsletter form"
+    }
+  },
+  "image_urls": {
+    "hero_cinematic": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gym_owner_cta": "https://images.unsplash.com/photo-1605296867304-46d5465a13f1?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gym_interior_1": "https://images.unsplash.com/photo-1623874514711-0f321325f318?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gym_interior_2": "https://images.unsplash.com/photo-1685633224860-7655234d9cd5?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gym_interior_3": "https://images.unsplash.com/photo-1685633225009-9a612a71b945?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gym_interior_4": "https://images.unsplash.com/photo-1674834727206-4bc272bfd8da?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "athlete_1": "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "athlete_2": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?crop=entropy&cs=srgb&fm=jpg&q=85"
+  },
+  "instructions_to_main_agent": [
+    "Always maintain dir='rtl' on top level containers or document element.",
+    "Use Lucide-React or Phosphor Icons for sport icons and UI indicators.",
+    "Ensure all interactive elements have explicit data-testid attributes (e.g. data-testid='hero-search-button', data-testid='theme-toggle-btn').",
+    "Use Vazirmatn font throughout the application.",
+    "Implement light and dark mode state connected to localStorage and body.classList.",
+    "Do NOT make the site monochromatic blue - rely on subtle greyish/slate backgrounds with punchy cyan and vibrant sky blue accents.",
+    "Make sure forms have rich micro-interactions and validation states.",
+    "All components should be written in JavaScript (.js / .jsx)."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": {
+    "testing_attributes": "All interactive and key informational elements MUST include a data-testid attribute in kebab-case.",
+    "no_transparent_overlays": "DO NOT use pure transparent background in headers or floating panels. Always use backdrop-blur + semi-opaque white/dark surface.",
+    "component_reuse": "Utilize existing UI components from src/components/ui/ (button, card, dialog, select, input, tabs, etc.).",
+    "toasts": "Use Sonner for user feedback toasts."
+  }
+}
