@@ -1,0 +1,27 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "EMERGENT_LLM_KEY",
+      "description": "Key for the Emergent object-storage proxy (integrations.emergentagent.com) used by POST /api/uploads. Without it gym-registration image uploads fail with 502; browsing/search/admin work regardless.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "WP_BASE_URL",
+      "description": "Optional. Base URL of a WordPress site running the smart-body-core plugin (wordpress/smart-body-core). Without it the API serves the built-in sample catalog.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "WP_USERNAME",
+      "description": "Optional. WordPress user for read/write access to the smart-body-core REST namespace.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "WP_APP_PASSWORD",
+      "description": "Optional. WordPress application password matching WP_USERNAME; enables writing registrations to WordPress.",
+      "requiredAtBoot": false
+    }
+  ]
+}

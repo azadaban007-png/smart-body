@@ -1,0 +1,103 @@
+# Development stack for the Base44 sandbox.
+# Source is bind-mounted into every app service and each one runs its hot-reloading dev server,
+# so edits in the repo appear without rebuilding. Dependencies are installed inside the build /
+# at startup, never baked together with application source.
+name: smart-body
+
+services:
+  mongo:
+    image: mongo:7
+    command: ["mongod", "--quiet", "--bind_ip_all"]
+    environment:
+      - MONGO_INITDB_DATABASE=smart_body
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand({ ping: 1 }).ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: on-failure
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.base44
+    working_dir: /app
+    command: ["sh", "-ec", "exec uvicorn server:app --host 0.0.0.0 --port 8000 --reload"]
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./.env.base44-defaults
+      - /run/base44/app.env
+    environment:
+      # Local infrastructure credentials are ours to define; user-supplied secrets stay in app.env.
+      - MONGO_URL=mongodb://mongo:27017
+      - DB_NAME=smart_body
+      - CORS_ORIGINS=https://3000-${BASE44_PUBLIC_HOST_SUFFIX}
+      - BASE44_PREVIEW_MODE
+    ports:
+      - "8000:8000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen("http://127.0.0.1:8000/api/", timeout=3).read()
+      interval: 15s
+      timeout: 5s
+      retries: 4
+      start_period: 20s
+    labels:
+      base44.project: "Smart Body API"
+      base44.kind: "api"
+      base44.port: "8000"
+      base44.docs: "/docs"
+    restart: on-failure
+
+  web:
+    image: node:20
+    working_dir: /app
+    command:
+      - sh
+      - -ec
+      - >
+        yarn install --non-interactive --network-timeout 600000 &&
+        exec yarn start
+    volumes:
+      - ./frontend:/app
+      - web_node_modules:/app/node_modules
+    environment:
+      - REACT_APP_BACKEND_URL=https://8000-${BASE44_PUBLIC_HOST_SUFFIX}
+      - BROWSER=none
+      - CI=false
+      - ESLINT_NO_DEV_ERRORS=true
+      - BASE44_PREVIEW_MODE
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - 'fetch("http://127.0.0.1:3000/").then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))'
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 120s
+    labels:
+      base44.project: "Smart Body"
+      base44.kind: "web"
+      base44.port: "3000"
+    restart: on-failure
+
+volumes:
+  mongo_data:
+  web_node_modules:
