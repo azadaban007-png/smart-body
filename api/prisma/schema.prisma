@@ -1,0 +1,184 @@
+// Shadi Ghader — Architecture & Interior Design Studio CMS schema (PostgreSQL)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id                  String         @id @default(cuid())
+  titleEn             String
+  titleFa             String
+  slug                String         @unique
+  categoryEn          String?
+  categoryFa          String?
+  locationEn          String?
+  locationFa          String?
+  year                Int?
+  descriptionEn       String? @db.Text
+  descriptionFa       String? @db.Text
+  shortDescriptionEn  String? @db.Text
+  shortDescriptionFa  String? @db.Text
+  featuredImage       String?
+  projectTypeEn       String?
+  projectTypeFa       String?
+  isFeatured          Boolean        @default(false)
+  isPublished         Boolean        @default(false)
+  displayOrder        Int            @default(0)
+  // SEO
+  seoTitleEn          String?
+  seoTitleFa          String?
+  seoDescriptionEn    String? @db.Text
+  seoDescriptionFa    String? @db.Text
+  ogImage             String?
+  canonicalUrl        String?
+  gallery             GalleryImage[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@index([isPublished, displayOrder])
+  @@index([isFeatured])
+}
+
+model GalleryImage {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url         String
+  altEn       String?
+  altFa       String?
+  displayOrder Int     @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([projectId, displayOrder])
+}
+
+model Service {
+  id            String   @id @default(cuid())
+  titleEn       String
+  titleFa       String
+  descriptionEn String?  @db.Text
+  descriptionFa String?  @db.Text
+  icon          String?
+  displayOrder  Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+}
+
+model Philosophy {
+  id            String   @id @default(cuid())
+  titleEn       String
+  titleFa       String
+  descriptionEn String   @db.Text
+  descriptionFa String   @db.Text
+  image         String?
+  buttonTextEn  String?
+  buttonTextFa  String?
+  buttonUrl     String?
+  updatedAt     DateTime @updatedAt
+}
+
+model HomepageSettings {
+  id                          String   @id @default(cuid())
+  // Hero
+  heroEyebrowEn               String?
+  heroEyebrowFa               String?
+  heroTitleEn                 String?
+  heroTitleFa                 String?
+  heroDescriptionEn           String?  @db.Text
+  heroDescriptionFa           String?  @db.Text
+  heroImage                   String?
+  ctaTextEn                   String?
+  ctaTextFa                   String?
+  ctaUrl                      String?
+  // Featured project reference
+  featuredProjectId           String?
+  // Projects section
+  projectsSectionTitleEn      String?
+  projectsSectionTitleFa      String?
+  projectsSectionDescriptionEn String? @db.Text
+  projectsSectionDescriptionFa String? @db.Text
+  // Bottom CTA
+  ctaTitleEn                  String?
+  ctaTitleFa                  String?
+  ctaDescriptionEn            String?  @db.Text
+  ctaDescriptionFa            String?  @db.Text
+  ctaButtonTextEn             String?
+  ctaButtonTextFa             String?
+  ctaButtonUrl                String?
+  ctaBackgroundImage           String?
+  updatedAt                   DateTime @updatedAt
+}
+
+model WebsiteSettings {
+  id           String   @id @default(cuid())
+  studioName   String?
+  email        String?
+  phone        String?
+  addressEn    String?
+  addressFa    String?
+  instagramUrl String?
+  whatsappUrl  String?
+  telegramUrl  String?
+  websiteUrl   String?
+  logo         String?
+  footerLogo   String?
+  favicon      String?
+  updatedAt    DateTime @updatedAt
+}
+
+model ContactInquiry {
+  id         String   @id @default(cuid())
+  name       String
+  email      String
+  phone      String?
+  projectType String?
+  budget     String?
+  message    String   @db.Text
+  language   String   @default("en")
+  status     String   @default("new") // new | contacted | in_progress | completed | archived
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model PageSeo {
+  id                String   @id @default(cuid())
+  pageKey           String   @unique // home | about | contact | projects | services
+  seoTitleEn        String?
+  seoTitleFa        String?
+  seoDescriptionEn  String?  @db.Text
+  seoDescriptionFa  String?  @db.Text
+  ogImage           String?
+  canonicalUrl      String?
+  updatedAt         DateTime @updatedAt
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  filename  String
+  altEn     String?
+  altFa     String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

@@ -1,0 +1,80 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: on-failure
+    environment:
+      POSTGRES_USER: shadi
+      POSTGRES_PASSWORD: shadi
+      POSTGRES_DB: shadighader
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shadi -d shadighader"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    labels:
+      base44.project: PostgreSQL
+      base44.kind: infra
+
+  api:
+    image: node:20
+    restart: on-failure
+    working_dir: /app
+    volumes:
+      - ./api:/app
+      - api_uploads:/app/uploads
+    environment:
+      DATABASE_URL: postgresql://shadi:shadi@postgres:5432/shadighader
+      PORT: "8000"
+      JWT_SECRET: dev-secret-change-me
+      JWT_EXPIRES_IN: 7d
+      ADMIN_EMAIL: admin@shadighader.com
+      ADMIN_PASSWORD: admin12345
+      CORS_ORIGINS: "*"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    command: ["sh", "-ec", "npm install && npx prisma generate && npx prisma db push --accept-data-loss && npm run seed && exec npx tsx watch src/index.ts"]
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:8000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    labels:
+      base44.project: Shadi Ghader API
+      base44.kind: api
+      base44.port: "8000"
+      base44.docs: /api/health
+
+  admin:
+    image: node:20
+    restart: on-failure
+    working_dir: /app
+    volumes:
+      - ./admin:/app
+    environment:
+      VITE_API_PROXY_TARGET: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3000:5173"
+    command: ["sh", "-ec", "npm install && exec npx vite --host 0.0.0.0 --port 5173"]
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:5173').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    labels:
+      base44.project: Shadi Ghader Admin
+      base44.kind: web
+      base44.port: "3000"
+
+volumes:
+  pgdata:
+  api_uploads:
