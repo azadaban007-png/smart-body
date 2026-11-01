@@ -1,0 +1,14 @@
+FROM node:20
+
+WORKDIR /app
+
+ENV CI=true
+
+# Install dependencies from the lockfile in the image layer (cached). Source is
+# bind-mounted at runtime, so edits don't require a rebuild; rebuild only when
+# package.json / pnpm-lock.yaml / pnpm-workspace.yaml change.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN corepack enable && corepack prepare pnpm@12.3.4 --activate \
+    && pnpm install --frozen-lockfile
+
+CMD ["pnpm", "exec", "next", "dev", "-H", "0.0.0.0", "-p", "3000"]
