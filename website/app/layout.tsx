@@ -26,9 +26,9 @@ const vazirmatn = Vazirmatn({
 })
 
 export const metadata: Metadata = {
-  title: 'Shadi Ghader | Architecture & Interior Design',
+  title: 'Vira Marketing | Architecture & Interior Design',
   description:
-    'Shadi Ghader is an architecture and interior design studio in Tehran creating villas, interiors and offices where nature, light and architecture come together. | شادی قادر، معماری و طراحی داخلی.',
+    'Vira Marketing — architecture and interior design studio creating villas, interiors and offices where nature, light and architecture come together. | ویرا مارکتینگ، معماری و طراحی داخلی.',
   generator: 'v0.app',
 }
 

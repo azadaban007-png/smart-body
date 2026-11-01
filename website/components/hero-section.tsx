@@ -1,21 +1,61 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
-import Image from 'next/image'
+import { useEffect, useRef } from 'react'
 import { useLang } from '@/components/language-provider'
 
 export function HeroSection() {
   const { t } = useLang()
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Scroll-driven playback: the video scrubs forward as the hero scrolls out of view.
+  useEffect(() => {
+    const video = videoRef.current
+    const section = sectionRef.current
+    if (!video || !section) return
+
+    let raf = 0
+    const scrub = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        if (!video.duration || isNaN(video.duration)) return
+        const rect = section.getBoundingClientRect()
+        const scrollable = rect.height
+        const scrolled = Math.min(Math.max(-rect.top, 0), scrollable)
+        const progress = scrollable > 0 ? scrolled / scrollable : 0
+        video.currentTime = progress * video.duration
+      })
+    }
+
+    const onLoaded = () => scrub()
+    video.addEventListener('loadedmetadata', onLoaded)
+    window.addEventListener('scroll', scrub, { passive: true })
+    window.addEventListener('resize', scrub)
+    scrub()
+
+    return () => {
+      video.removeEventListener('loadedmetadata', onLoaded)
+      window.removeEventListener('scroll', scrub)
+      window.removeEventListener('resize', scrub)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
 
   return (
-    <section id="home" className="relative min-h-[680px] overflow-hidden bg-ink text-cream md:h-[92svh]">
-      <Image
-        src="/images/hero.jpg"
-        alt="Luxury living room with a fireplace and floor-to-ceiling windows over the Tehran skyline"
-        fill
-        priority
-        sizes="100vw"
-        className="animate-slow-zoom object-cover object-[65%_center]"
+    <section
+      ref={sectionRef}
+      id="home"
+      className="relative min-h-[680px] overflow-hidden bg-ink text-cream md:h-[92svh]"
+    >
+      <video
+        ref={videoRef}
+        src="/videos/hero.mp4"
+        muted
+        playsInline
+        preload="auto"
+        aria-label="Brand showcase video"
+        className="absolute inset-0 h-full w-full object-cover"
       />
       <div className="absolute inset-0 bg-ink/35" aria-hidden="true" />
       <div className="absolute inset-0 bg-[image:var(--gradient-hero)]" aria-hidden="true" />

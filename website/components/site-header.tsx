@@ -13,7 +13,7 @@ export function SiteHeader() {
   return (
     <header className="absolute inset-x-0 top-0 z-40 text-cream">
       <div className="mx-auto flex max-w-[1536px] items-center justify-between gap-6 px-6 py-6 md:px-16">
-        <a href="#home" aria-label="Shadi Ghader" className="shrink-0">
+        <a href="#home" aria-label="Vira Marketing" className="shrink-0">
           <Logo />
         </a>
 

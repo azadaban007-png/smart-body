@@ -5,7 +5,7 @@ export function Monogram({ className }: { className?: string }) {
       dir="ltr"
       className={`font-serif font-light leading-none ${className ?? ''}`}
     >
-      SG
+      VM
     </span>
   )
 }
@@ -16,7 +16,7 @@ export function Logo() {
       <Monogram className="text-4xl tracking-tighter" />
       <span className="hidden flex-col sm:flex">
         <span className="font-serif text-lg uppercase leading-tight tracking-[0.18em]">
-          Shadi Ghader
+          Vira Marketing
         </span>
         <span className="text-[0.5rem] uppercase tracking-[0.28em] opacity-70">
           Architecture &amp; Interior Design
