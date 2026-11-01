@@ -16,28 +16,47 @@ export function HeroSection() {
     if (!video || !section) return
 
     let raf = 0
+    let sectionTop = 0
+    let sectionHeight = 0
+
+    // Cache layout once (and on resize) instead of calling getBoundingClientRect on every scroll frame.
+    const measure = () => {
+      const rect = section.getBoundingClientRect()
+      sectionTop = rect.top + window.scrollY
+      sectionHeight = rect.height
+    }
+
+    let lastTime = -1
     const scrub = () => {
-      cancelAnimationFrame(raf)
+      if (raf) return // one rAF per frame max
       raf = requestAnimationFrame(() => {
+        raf = 0
         if (!video.duration || isNaN(video.duration)) return
-        const rect = section.getBoundingClientRect()
-        const scrollable = rect.height
-        const scrolled = Math.min(Math.max(-rect.top, 0), scrollable)
-        const progress = scrollable > 0 ? scrolled / scrollable : 0
-        video.currentTime = progress * video.duration
+        const scrollY = window.scrollY
+        // skip work entirely once the hero is off-screen
+        if (scrollY >= sectionTop + sectionHeight) return
+        if (scrollY + window.innerHeight <= sectionTop) return
+        const scrolled = Math.min(Math.max(scrollY - sectionTop, 0), sectionHeight)
+        const progress = sectionHeight > 0 ? scrolled / sectionHeight : 0
+        const target = progress * video.duration
+        // avoid redundant seeks
+        if (Math.abs(target - lastTime) < 0.02) return
+        lastTime = target
+        video.currentTime = target
       })
     }
 
-    const onLoaded = () => scrub()
+    const onLoaded = () => { measure(); scrub() }
+    measure()
     video.addEventListener('loadedmetadata', onLoaded)
     window.addEventListener('scroll', scrub, { passive: true })
-    window.addEventListener('resize', scrub)
+    window.addEventListener('resize', measure)
     scrub()
 
     return () => {
       video.removeEventListener('loadedmetadata', onLoaded)
       window.removeEventListener('scroll', scrub)
-      window.removeEventListener('resize', scrub)
+      window.removeEventListener('resize', measure)
       cancelAnimationFrame(raf)
     }
   }, [])
