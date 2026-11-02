@@ -14,7 +14,7 @@ export function PhilosophySection() {
       className="clip-wave-both relative z-30 -mt-16 overflow-hidden bg-ink py-44 text-cream"
     >
       <Image
-        src="/images/philosophy.jpg"
+        src="/images/philosophy.webp"
         alt="Sunlit stone wall with a vase and a tall leafy plant"
         fill
         sizes="100vw"

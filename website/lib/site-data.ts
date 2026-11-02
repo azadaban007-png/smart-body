@@ -78,7 +78,7 @@ const en = {
     {
       id: 'niavaran',
       index: '01',
-      featuredImage: '/images/featured.jpg',
+      featuredImage: '/images/featured.webp',
       name: 'Niavaran Villa',
       shortName: 'Villa Niavaran',
       kind: 'Villa',
@@ -90,7 +90,7 @@ const en = {
     {
       id: 'zafaraniyeh',
       index: '02',
-      featuredImage: '/images/p2.jpg',
+      featuredImage: '/images/p2.webp',
       name: 'Zafaraniyeh Villa',
       shortName: 'Zafaraniyeh',
       kind: 'Interior',
@@ -102,7 +102,7 @@ const en = {
     {
       id: 'damavand',
       index: '03',
-      featuredImage: '/images/p1.jpg',
+      featuredImage: '/images/p1.webp',
       name: 'Damavand Villa',
       shortName: 'Villa Damavand',
       kind: 'Villa',
@@ -114,7 +114,7 @@ const en = {
     {
       id: 'kheradmandsh',
       index: '04',
-      featuredImage: '/images/p3.jpg',
+      featuredImage: '/images/p3.webp',
       name: 'Kheradmandsh Office',
       shortName: 'Kheradmandsh',
       kind: 'Office',
@@ -125,10 +125,10 @@ const en = {
     },
   ] satisfies Project[],
   collection: [
-    { id: 'c1', index: '01', image: '/images/p1.jpg', name: 'Villa Damavand', kind: 'Villa', location: 'Tehran' },
-    { id: 'c2', index: '02', image: '/images/p2.jpg', name: 'Zafaraniyeh', kind: 'Interior', location: 'Tehran' },
-    { id: 'c3', index: '03', image: '/images/p3.jpg', name: 'Kheradmandsh', kind: 'Office', location: 'Tehran' },
-    { id: 'c4', index: '04', image: '/images/p4.jpg', name: 'Mahallat', kind: 'Villa', location: 'Mahallat' },
+    { id: 'c1', index: '01', image: '/images/p1.webp', name: 'Villa Damavand', kind: 'Villa', location: 'Tehran' },
+    { id: 'c2', index: '02', image: '/images/p2.webp', name: 'Zafaraniyeh', kind: 'Interior', location: 'Tehran' },
+    { id: 'c3', index: '03', image: '/images/p3.webp', name: 'Kheradmandsh', kind: 'Office', location: 'Tehran' },
+    { id: 'c4', index: '04', image: '/images/p4.webp', name: 'Mahallat', kind: 'Villa', location: 'Mahallat' },
   ] as CollectionItem[],
 }
 

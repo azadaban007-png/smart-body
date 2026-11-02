@@ -34,7 +34,7 @@ export function SiteFooter() {
       className="clip-wave-top relative z-50 -mt-16 overflow-hidden bg-ink pb-16 pt-32 text-cream"
     >
       <Image
-        src="/images/stairs.png"
+        src="/images/stairs.webp"
         alt="Sculptural spiral staircase lit by warm light"
         fill
         sizes="100vw"

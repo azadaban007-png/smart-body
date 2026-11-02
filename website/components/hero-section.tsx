@@ -72,7 +72,7 @@ export function HeroSection() {
         src="/videos/hero.mp4"
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         aria-label="Brand showcase video"
         className="absolute inset-0 h-full w-full object-cover"
       />
