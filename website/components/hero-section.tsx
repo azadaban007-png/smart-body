@@ -15,7 +15,6 @@ export function HeroSection() {
     const section = sectionRef.current
     if (!video || !section) return
 
-    let raf = 0
     let sectionTop = 0
     let sectionHeight = 0
 
@@ -26,38 +25,43 @@ export function HeroSection() {
       sectionHeight = rect.height
     }
 
-    let lastTime = -1
-    const scrub = () => {
-      if (raf) return // one rAF per frame max
-      raf = requestAnimationFrame(() => {
-        raf = 0
-        if (!video.duration || isNaN(video.duration)) return
-        const scrollY = window.scrollY
-        // skip work entirely once the hero is off-screen
-        if (scrollY >= sectionTop + sectionHeight) return
-        if (scrollY + window.innerHeight <= sectionTop) return
-        const scrolled = Math.min(Math.max(scrollY - sectionTop, 0), sectionHeight)
-        const progress = sectionHeight > 0 ? scrolled / sectionHeight : 0
-        const target = progress * video.duration
-        // avoid redundant seeks
-        if (Math.abs(target - lastTime) < 0.02) return
-        lastTime = target
-        video.currentTime = target
-      })
+    // The seek lock is what makes scrubbing smooth: we never issue a new seek until the
+    // previous one has finished rendering (the 'seeked' event). Without this the browser
+    // keeps cancelling and restarting seeks on every scroll frame, which is the jank.
+    let seeking = false
+
+    const apply = () => {
+      if (seeking || !video.duration || isNaN(video.duration)) return
+      const scrollY = window.scrollY
+      if (scrollY >= sectionTop + sectionHeight) return
+      if (scrollY + window.innerHeight <= sectionTop) return
+      const scrolled = Math.min(Math.max(scrollY - sectionTop, 0), sectionHeight)
+      const progress = sectionHeight > 0 ? scrolled / sectionHeight : 0
+      const target = progress * video.duration
+      if (Math.abs(target - video.currentTime) < 0.03) return
+      seeking = true
+      video.currentTime = target
     }
 
-    const onLoaded = () => { measure(); scrub() }
+    // When a seek finishes, catch up to wherever the scroll is now.
+    const onSeeked = () => {
+      seeking = false
+      apply()
+    }
+
+    const onLoaded = () => { measure(); apply() }
     measure()
     video.addEventListener('loadedmetadata', onLoaded)
-    window.addEventListener('scroll', scrub, { passive: true })
+    video.addEventListener('seeked', onSeeked)
+    window.addEventListener('scroll', apply, { passive: true })
     window.addEventListener('resize', measure)
-    scrub()
+    apply()
 
     return () => {
       video.removeEventListener('loadedmetadata', onLoaded)
-      window.removeEventListener('scroll', scrub)
+      video.removeEventListener('seeked', onSeeked)
+      window.removeEventListener('scroll', apply)
       window.removeEventListener('resize', measure)
-      cancelAnimationFrame(raf)
     }
   }, [])
 
@@ -72,7 +76,7 @@ export function HeroSection() {
         src="/videos/hero.mp4"
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         aria-label="Brand showcase video"
         className="absolute inset-0 h-full w-full object-cover"
       />
