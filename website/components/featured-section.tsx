@@ -21,7 +21,7 @@ export function FeaturedSection() {
   return (
     <section
       id="featured"
-      className="clip-wave-top relative z-10 -mt-24 bg-ivory-deep pb-32 pt-28 md:-mt-28"
+      className="relative z-10 bg-ivory-deep pb-32 pt-28"
     >
       <div className="mx-auto flex max-w-[1536px] flex-col gap-12 lg:flex-row lg:items-center">
         <div className="w-full lg:w-[54%] lg:shrink-0">

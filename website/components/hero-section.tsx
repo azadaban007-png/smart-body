@@ -80,6 +80,14 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-[image:var(--gradient-hero)]" aria-hidden="true" />
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink/40 to-transparent" aria-hidden="true" />
 
+      {/* Wavy cream separator drawn on top of the video, so the hero carries its own
+          bottom edge instead of the featured section's mask overlapping it. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1]" aria-hidden="true">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" className="block h-[56px] w-full md:h-[80px]">
+          <path d="M0,34 C240,8 480,58 720,30 C960,2 1200,54 1440,22 L1440,80 L0,80 Z" fill="var(--ivory-deep)" />
+        </svg>
+      </div>
+
       <div className="relative z-10 mx-auto flex h-full min-h-[680px] max-w-[1536px] flex-col justify-center px-6 pb-48 pt-32 md:px-16">
         <p className="eyebrow mb-6 opacity-80">{t.hero.eyebrow}</p>
         <h1 className="font-serif text-5xl font-light leading-[1.08] md:text-7xl">
