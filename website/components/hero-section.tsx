@@ -7,27 +7,25 @@ import { useLang } from '@/components/language-provider'
 export function HeroSection() {
   const { t } = useLang()
   const videoRef = useRef<HTMLVideoElement>(null)
-  const sectionRef = useRef<HTMLElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const video = videoRef.current
-    const section = sectionRef.current
-    if (!video || !section) return
+    const stage = stageRef.current
+    if (!video || !stage) return
 
-    // hero-scroll.mp4 is 24fps, all-intra: every frame can be decoded independently.
-    // A long-GOP video has to decode from its previous keyframe on every seek.
+    // hero-scroll.mp4 is 24fps, all-intra: every frame decodes independently.
     const fps = 24
     let raf = 0
-    let sectionTop = 0
-    let sectionHeight = 0
+    let stageTop = 0
+    let scrollRange = 0
 
     const render = () => {
       raf = 0
-      if (!Number.isFinite(video.duration) || video.readyState < 2 || !sectionHeight) return
-
-      // Read the latest scroll position, not a queue of intermediate positions.
-      // Clamp at both ends, including jumps completely past the hero.
-      const progress = Math.min(1, Math.max(0, (window.scrollY - sectionTop) / sectionHeight))
+      if (!Number.isFinite(video.duration) || video.readyState < 2 || !scrollRange) return
+      // The hero stays pinned while the stage scrolls past; map that distance
+      // (stage height minus one viewport) to the video timeline, clamped at both ends.
+      const progress = Math.min(1, Math.max(0, (window.scrollY - stageTop) / scrollRange))
       const lastFrame = Math.max(0, Math.round(video.duration * fps) - 1)
       const target = Math.round(progress * lastFrame) / fps
       if (video.seeking || Math.abs(video.currentTime - target) < 0.5 / fps) return
@@ -39,14 +37,14 @@ export function HeroSection() {
     }
 
     const measure = () => {
-      const rect = section.getBoundingClientRect()
-      sectionTop = rect.top + window.scrollY
-      sectionHeight = rect.height
+      const rect = stage.getBoundingClientRect()
+      stageTop = rect.top + window.scrollY
+      scrollRange = Math.max(0, rect.height - window.innerHeight)
       schedule()
     }
 
     const observer = new ResizeObserver(measure)
-    observer.observe(section)
+    observer.observe(stage)
     measure()
     video.addEventListener('loadeddata', schedule)
     video.addEventListener('seeked', schedule)
@@ -64,20 +62,20 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      id="home"
-      className="relative min-h-[680px] overflow-hidden bg-ink text-cream md:h-[92svh]"
-    >
-      <video
-        ref={videoRef}
-        src="/videos/hero-scroll.mp4"
-        muted
-        playsInline
-        preload="auto"
-        aria-label="Brand showcase video"
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+    <div ref={stageRef} className="relative h-[300vh]">
+      <section
+        id="home"
+        className="sticky top-0 h-[100svh] overflow-hidden bg-ink text-cream"
+      >
+        <video
+          ref={videoRef}
+          src="/videos/hero-scroll.mp4"
+          muted
+          playsInline
+          preload="auto"
+          aria-label="Brand showcase video"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
       <div className="absolute inset-0 bg-ink/35" aria-hidden="true" />
       <div className="absolute inset-0 bg-[image:var(--gradient-hero)]" aria-hidden="true" />
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink/40 to-transparent" aria-hidden="true" />
@@ -120,6 +118,7 @@ export function HeroSection() {
       <p className="absolute bottom-32 end-6 z-10 hidden text-xs tracking-[0.3em] opacity-70 md:block md:end-16" dir="ltr">
         01 &nbsp;/&nbsp; 04
       </p>
-    </section>
+      </section>
+    </div>
   )
 }

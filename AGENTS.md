@@ -55,6 +55,11 @@ toggle, and the mobile menu have been exercised in the preview.
 - The hero uses `hero-scroll.mp4`: the same dimensions (1280×704) and 193 frames,
   H.264 all-intra, no audio, with the MP4 index at the start. Its 24fps encoding
   must match the frame mapping in `components/hero-section.tsx`.
+- The hero is pinned: `hero-section.tsx` wraps the `<section>` in a `h-[300vh]`
+  stage with the section `sticky top-0 h-[100svh]`. The video timeline maps to the
+  scroll distance across that stage (stage height minus one viewport), so the
+  video scrubs forward scrolling down and backward scrolling up over ~2 screens,
+  then the hero releases and the featured section follows.
 - To regenerate with FFmpeg (in a disposable runtime container, not on the host):
   `ffmpeg -i hero.mp4 -map 0:v:0 -an -c:v libx264 -preset fast -crf 21 -g 1 -keyint_min 1 -bf 0 -pix_fmt yuv420p -movflags +faststart hero-scroll.mp4`.
 - Verify fast continuous forward/reverse scrolling using
