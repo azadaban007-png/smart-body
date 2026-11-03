@@ -46,3 +46,19 @@ curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3000/   # expect 200
 
 Page sections (hero, featured, projects, philosophy, services, footer), the EN/FA language
 toggle, and the mobile menu have been exercised in the preview.
+
+## Hero scroll video
+
+- `website/public/videos/hero.mp4` is the original source: 193 frames at 24fps but
+  only one keyframe. Random seeks decode up to eight seconds of dependent frames;
+  preloading or serializing seeks alone does not solve the visible lag.
+- The hero uses `hero-scroll.mp4`: the same dimensions (1280×704) and 193 frames,
+  H.264 all-intra, no audio, with the MP4 index at the start. Its 24fps encoding
+  must match the frame mapping in `components/hero-section.tsx`.
+- To regenerate with FFmpeg (in a disposable runtime container, not on the host):
+  `ffmpeg -i hero.mp4 -map 0:v:0 -an -c:v libx264 -preset fast -crf 21 -g 1 -keyint_min 1 -bf 0 -pix_fmt yuv420p -movflags +faststart hero-scroll.mp4`.
+- Verify fast continuous forward/reverse scrolling using
+  `requestVideoFrameCallback`'s **presented** `mediaTime`; `currentTime` changes
+  before the requested frame is displayed and alone cannot prove synchronization.
+  Also check jumps past the hero (last frame), return to top (first frame), and
+  resizing. Type-check with `docker compose -f docker-compose.base44.yml exec -T web pnpm exec tsc --noEmit --incremental false`.

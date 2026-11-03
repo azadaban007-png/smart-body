@@ -9,58 +9,56 @@ export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
 
-  // Scroll-driven playback: the video scrubs forward as the hero scrolls out of view.
   useEffect(() => {
     const video = videoRef.current
     const section = sectionRef.current
     if (!video || !section) return
 
+    // hero-scroll.mp4 is 24fps, all-intra: every frame can be decoded independently.
+    // A long-GOP video has to decode from its previous keyframe on every seek.
+    const fps = 24
+    let raf = 0
     let sectionTop = 0
     let sectionHeight = 0
 
-    // Cache layout once (and on resize) instead of calling getBoundingClientRect on every scroll frame.
+    const render = () => {
+      raf = 0
+      if (!Number.isFinite(video.duration) || video.readyState < 2 || !sectionHeight) return
+
+      // Read the latest scroll position, not a queue of intermediate positions.
+      // Clamp at both ends, including jumps completely past the hero.
+      const progress = Math.min(1, Math.max(0, (window.scrollY - sectionTop) / sectionHeight))
+      const lastFrame = Math.max(0, Math.round(video.duration * fps) - 1)
+      const target = Math.round(progress * lastFrame) / fps
+      if (video.seeking || Math.abs(video.currentTime - target) < 0.5 / fps) return
+      video.currentTime = target
+    }
+
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(render)
+    }
+
     const measure = () => {
       const rect = section.getBoundingClientRect()
       sectionTop = rect.top + window.scrollY
       sectionHeight = rect.height
+      schedule()
     }
 
-    // The seek lock is what makes scrubbing smooth: we never issue a new seek until the
-    // previous one has finished rendering (the 'seeked' event). Without this the browser
-    // keeps cancelling and restarting seeks on every scroll frame, which is the jank.
-    let seeking = false
-
-    const apply = () => {
-      if (seeking || !video.duration || isNaN(video.duration)) return
-      const scrollY = window.scrollY
-      if (scrollY >= sectionTop + sectionHeight) return
-      if (scrollY + window.innerHeight <= sectionTop) return
-      const scrolled = Math.min(Math.max(scrollY - sectionTop, 0), sectionHeight)
-      const progress = sectionHeight > 0 ? scrolled / sectionHeight : 0
-      const target = progress * video.duration
-      if (Math.abs(target - video.currentTime) < 0.03) return
-      seeking = true
-      video.currentTime = target
-    }
-
-    // When a seek finishes, catch up to wherever the scroll is now.
-    const onSeeked = () => {
-      seeking = false
-      apply()
-    }
-
-    const onLoaded = () => { measure(); apply() }
+    const observer = new ResizeObserver(measure)
+    observer.observe(section)
     measure()
-    video.addEventListener('loadedmetadata', onLoaded)
-    video.addEventListener('seeked', onSeeked)
-    window.addEventListener('scroll', apply, { passive: true })
+    video.addEventListener('loadeddata', schedule)
+    video.addEventListener('seeked', schedule)
+    window.addEventListener('scroll', schedule, { passive: true })
     window.addEventListener('resize', measure)
-    apply()
 
     return () => {
-      video.removeEventListener('loadedmetadata', onLoaded)
-      video.removeEventListener('seeked', onSeeked)
-      window.removeEventListener('scroll', apply)
+      cancelAnimationFrame(raf)
+      observer.disconnect()
+      video.removeEventListener('loadeddata', schedule)
+      video.removeEventListener('seeked', schedule)
+      window.removeEventListener('scroll', schedule)
       window.removeEventListener('resize', measure)
     }
   }, [])
@@ -73,7 +71,7 @@ export function HeroSection() {
     >
       <video
         ref={videoRef}
-        src="/videos/hero.mp4"
+        src="/videos/hero-scroll.mp4"
         muted
         playsInline
         preload="auto"
