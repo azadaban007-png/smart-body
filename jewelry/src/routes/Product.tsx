@@ -1,9 +1,9 @@
 import { Link, useParams } from "@tanstack/react-router";
 import { useState } from "react";
-import { ChevronRight, Heart, Minus, Plus, ShoppingBag, Truck } from "lucide-react";
+import { ChevronLeft, Heart, Minus, Plus, ShoppingBag, Truck } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductCard } from "@/components/ProductCard";
-import { getProduct, PRODUCTS, formatPrice } from "@/lib/products";
+import { getProduct, PRODUCTS, formatPrice, faCat, faColl } from "@/lib/products";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
@@ -17,8 +17,8 @@ export function Product() {
   if (!product) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center md:px-8">
-        <h1 className="font-serif text-4xl">Piece not found</h1>
-        <Link to="/shop" className="btn-gold mt-6">Back to collection</Link>
+        <h1 className="font-serif text-4xl">تکه پیدا نشد</h1>
+        <Link to="/shop" className="btn-gold mt-6">بازگشت به کالکشن</Link>
       </div>
     );
   }
@@ -28,7 +28,7 @@ export function Product() {
 
   return (
     <div className="pb-20">
-      <PageHeader title={product.name} crumbs={[product.category, product.name]} />
+      <PageHeader title={product.name} crumbs={[faCat(product.category), product.name]} />
 
       <div className="mx-auto mt-8 grid max-w-7xl gap-10 px-4 md:px-8 lg:grid-cols-2">
         {/* Image */}
@@ -38,12 +38,12 @@ export function Product() {
 
         {/* Details */}
         <div className="flex flex-col gap-5">
-          <span className="eyebrow">{product.collection} · {product.category}</span>
+          <span className="eyebrow">{faColl(product.collection)} · {faCat(product.category)}</span>
           <p className="text-3xl text-gold">{formatPrice(product.price)}</p>
           <p className="text-sm leading-relaxed text-muted-foreground">{product.description}</p>
 
           <div>
-            <p className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">Metal</p>
+            <p className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">فلز</p>
             <div className="flex flex-wrap gap-2">
               {product.metals.map((m) => (
                 <button key={m} onClick={() => setMetal(m)} aria-pressed={metal === m}
@@ -55,13 +55,13 @@ export function Product() {
           </div>
 
           <div className="flex items-center gap-4">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground">Quantity</p>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground">تعداد</p>
             <div className="inline-flex items-center rounded-full border border-border">
-              <button className="grid h-9 w-9 place-items-center hover:text-gold" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity"><Minus className="h-3.5 w-3.5" /></button>
+              <button className="grid h-9 w-9 place-items-center hover:text-gold" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="کاهش تعداد"><Minus className="h-3.5 w-3.5" /></button>
               <span className="w-8 text-center">{qty}</span>
-              <button className="grid h-9 w-9 place-items-center hover:text-gold disabled:opacity-30" disabled={qty >= product.stock} onClick={() => setQty((q) => q + 1)} aria-label="Increase quantity"><Plus className="h-3.5 w-3.5" /></button>
+              <button className="grid h-9 w-9 place-items-center hover:text-gold disabled:opacity-30" disabled={qty >= product.stock} onClick={() => setQty((q) => q + 1)} aria-label="افزایش تعداد"><Plus className="h-3.5 w-3.5" /></button>
             </div>
-            <span className="text-xs text-muted-foreground">{product.stock} in stock</span>
+            <span className="text-xs text-muted-foreground">{product.stock} عدد موجود</span>
           </div>
 
           <div className="flex flex-wrap gap-3 pt-2">
@@ -70,15 +70,15 @@ export function Product() {
               disabled={product.stock === 0}
               onClick={() => { addToCart(product.id, qty, metal); setCartOpen(true); }}
             >
-              <ShoppingBag className="h-4 w-4" /> Add to bag
+              <ShoppingBag className="h-4 w-4" /> افزودن به سبد
             </button>
-            <button className="btn-ghost" onClick={() => toggleWishlist(product.id)} aria-label="Toggle wishlist">
+            <button className="btn-ghost" onClick={() => toggleWishlist(product.id)} aria-label="علاقه‌مندی">
               <Heart className={cn("h-4 w-4", saved && "fill-gold text-gold")} />
             </button>
           </div>
 
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Truck className="h-4 w-4 text-gold" /> Complimentary insured shipping & 30-day returns
+            <Truck className="h-4 w-4 text-gold" /> ارسال بیمه‌شده رایگان و بازگشت کالا تا ۳۰ روز
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@ export function Product() {
       {related.length > 0 && (
         <section className="mx-auto mt-20 max-w-7xl px-4 md:px-8">
           <div className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-            <ChevronRight className="h-4 w-4" /> You may also like
+            <ChevronLeft className="h-4 w-4" /> ممکن است بپسندید
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((p) => <ProductCard key={p.id} product={p} />)}

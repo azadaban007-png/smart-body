@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Eye, Heart, ShoppingBag } from "lucide-react";
-import { formatPrice, type Product } from "@/lib/products";
+import { formatPrice, faCat, type Product } from "@/lib/products";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
@@ -14,25 +14,25 @@ export function ProductCard({ product }: { product: Product }) {
           <img src={product.images[0]} alt={product.name} loading="lazy" width={800} height={1000}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
         </Link>
-        {product.isNew && <span className="eyebrow absolute left-3 top-3 rounded-full bg-background/70 px-3 py-1 backdrop-blur">New</span>}
-        {product.stock === 0 && <span className="absolute left-3 top-3 rounded-full bg-background/80 px-3 py-1 text-xs uppercase tracking-widest text-muted-foreground">Sold out</span>}
-        <button onClick={() => toggleWishlist(product.id)} aria-label={saved ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={saved}
-          className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-background/60 backdrop-blur transition hover:bg-background">
+        {product.isNew && <span className="eyebrow absolute right-3 top-3 rounded-full bg-background/70 px-3 py-1 backdrop-blur">جدید</span>}
+        {product.stock === 0 && <span className="absolute right-3 top-3 rounded-full bg-background/80 px-3 py-1 text-xs uppercase tracking-widest text-muted-foreground">ناموجود</span>}
+        <button onClick={() => toggleWishlist(product.id)} aria-label={saved ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"} aria-pressed={saved}
+          className="absolute left-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-background/60 backdrop-blur transition hover:bg-background">
           <Heart className={cn("h-4 w-4", saved && "fill-gold text-gold")} />
         </button>
         <button onClick={() => setQuickView(product)}
           className="absolute inset-x-3 bottom-3 flex translate-y-3 items-center justify-center gap-2 rounded-full bg-background/80 py-2 text-xs uppercase tracking-widest opacity-0 backdrop-blur transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 focus-visible:translate-y-0 focus-visible:opacity-100">
-          <Eye className="h-4 w-4" /> Quick view
+          <Eye className="h-4 w-4" /> نمایش سریع
         </button>
       </div>
       <div className="flex flex-1 flex-col gap-1 p-4">
-        <span className="text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">{product.category}</span>
+        <span className="text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">{faCat(product.category)}</span>
         <Link to="/product/$id" params={{ id: product.id }} className="font-serif text-xl hover:text-gold">{product.name}</Link>
         <div className="mt-auto flex items-center justify-between pt-3">
           <span className="text-gold">{formatPrice(product.price)}</span>
-          <button onClick={() => addToCart(product.id)} disabled={product.stock === 0} aria-label={`Add ${product.name} to cart`}
+          <button onClick={() => addToCart(product.id)} disabled={product.stock === 0} aria-label={`افزودن ${product.name} به سبد`}
             className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs transition hover:border-gold hover:text-gold disabled:opacity-40">
-            <ShoppingBag className="h-3.5 w-3.5" /> Add
+            <ShoppingBag className="h-3.5 w-3.5" /> افزودن
           </button>
         </div>
       </div>

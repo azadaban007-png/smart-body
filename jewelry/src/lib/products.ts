@@ -24,7 +24,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Platinum", "Yellow Gold", "Rose Gold"],
     images: ["/ring.jpg"],
     description:
-      "A single brilliant-cut diamond held in a delicate six-prong setting. The Celeste solitaire is an enduring symbol, cut for maximum light return and set by hand.",
+      "یک الماس برلیانت‌کات منفرد در نگین شش‌پر‌های ظریف. سلست یک نماد ماندگار است، برای بیشترین بازگشت نور برش خورده و با دست تنظیم شده.",
     stock: 8,
     isFeatured: true,
   },
@@ -38,7 +38,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Platinum", "White Gold"],
     images: ["/bridal.jpg"],
     description:
-      "A cushion-cut centre stone framed by a halo of pavé diamonds. The Aurora halo amplifies brilliance from every angle.",
+      "سنگ مرکزی کوشن‌کات احاطه‌شده با هاله‌ای از الماس‌های پاوه. هاله‌ی آرورا درخشش را از هر زاویه‌ای amplify می‌کند.",
     stock: 5,
     isFeatured: true,
     isNew: true,
@@ -53,7 +53,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Yellow Gold", "Rose Gold"],
     images: ["/ring.jpg"],
     description:
-      "A weighty, hand-finished band with a softly brushed surface. Made to be worn alone or stacked for a lifetime.",
+      "حلقه‌ی طلایی سنگین با پرداخت دستی و سطحی مات و نرم. ساخته‌شده برای پوشیدن تنها یا روی هم برای یک عمر.",
     stock: 14,
   },
   {
@@ -66,7 +66,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Sterling Silver"],
     images: ["/ring.jpg"],
     description:
-      "A slim sterling silver band with a high-polish edge. Light enough to layer, refined enough to stand alone.",
+      "حلقه‌ی نقره‌ای باریک با لبه‌ی کاملاً صیقلی. آن‌قدر سبک که روی هم بپوشی و آن‌قدر ظریف که تنها بدرخشد.",
     stock: 22,
   },
   {
@@ -79,7 +79,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Yellow Gold", "White Gold"],
     images: ["/hoops.jpg"],
     description:
-      "Perfectly round gold hoops with a hidden hinge and a mirror finish. An everyday icon, reimagined in solid gold.",
+      "حلقه‌های گوش طلایی کاملاً گرد با لولای پنهان و پرداخت آینه‌ای. نماد هرروز، در طلای یکپارچه بازتصور شده.",
     stock: 11,
     isFeatured: true,
   },
@@ -93,7 +93,7 @@ export const PRODUCTS: Product[] = [
     metals: ["White Gold", "Platinum"],
     images: ["/hoops.jpg"],
     description:
-      "Linear drops of graduated diamonds, each stone suspended to catch the light as you move.",
+      "گوشواره‌های خطی از الماس‌های درجه‌بندی‌شده، هر سنگ آویزان تا نور را با حرکت شما بگیرد.",
     stock: 6,
     isNew: true,
   },
@@ -107,7 +107,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Sterling Silver"],
     images: ["/hoops.jpg"],
     description:
-      "Whisper-thin sterling threads that thread through the lobe for a floating, weightless effect.",
+      "نخ‌های نقره‌ای بسیار باریک که از گوش‌وار عبور می‌کنند برای جلوه‌ای شناور و بی‌وزن.",
     stock: 0,
   },
   {
@@ -120,7 +120,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Yellow Gold", "Rose Gold"],
     images: ["/bangle.jpg"],
     description:
-      "A sculptural gold bangle with a polished concave face that captures and reflects the light around you.",
+      "بنگل طلایی مجسمه‌سازانه با رویه‌ی مقعر صیقلی که نور اطراف شما را می‌گیرد و بازتاب می‌دهد.",
     stock: 9,
     isFeatured: true,
   },
@@ -134,7 +134,7 @@ export const PRODUCTS: Product[] = [
     metals: ["White Gold", "Platinum"],
     images: ["/bangle.jpg"],
     description:
-      "A continuous line of matched diamonds set in a secure four-prong gallery. The definition of quiet brilliance.",
+      "خط پیوسته‌ای از الماس‌های هم‌خانواده در گالری چهارپر امن. تعریف درخشش خاموش.",
     stock: 4,
   },
   {
@@ -147,7 +147,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Sterling Silver"],
     images: ["/bangle.jpg"],
     description:
-      "An open sterling cuff with a hand-hammered texture. Effortless to wear, impossible to ignore.",
+      "کاف نقره‌ای باز با بافت چکشی دست‌ساز. پوشیدنش بی‌کوشش، نادیده‌گرفتنش غیرممکن.",
     stock: 18,
   },
   {
@@ -160,7 +160,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Yellow Gold", "White Gold"],
     images: ["/aurora-necklace.jpg"],
     description:
-      "A pendant of pavé diamonds suspended from a fine gold chain. Light pools at the collarbone like a held breath.",
+      "آویز الماس‌های پاوه آویزان از زنجیر طلایی ظریف. نور مانند نفسی نگه‌داشته‌شده در گردن جمع می‌شود.",
     stock: 7,
     isFeatured: true,
     isNew: true,
@@ -175,7 +175,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Platinum", "White Gold"],
     images: ["/hero-necklace.jpg"],
     description:
-      "A single pear-shaped diamond on an adjustable chain. A piece designed to be the final note of any ensemble.",
+      "یک الماس گلابی‌شکل منفرد روی زنجیر قابل‌تنظیم. تکه‌ای طراحی‌شده تا نتهای نهایی هر ترکیب باشد.",
     stock: 5,
     isFeatured: true,
   },
@@ -189,7 +189,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Yellow Gold"],
     images: ["/chain.jpg"],
     description:
-      "A layered gold chain with tiny star-set studs along its length. Made to be worn long or doubled.",
+      "زنجیر طلایی چندلایه با میخ‌های ستاره‌ای کوچک در طولش. ساخته‌شده برای پوشیدن بلند یا دوبل.",
     stock: 12,
   },
   {
@@ -202,7 +202,7 @@ export const PRODUCTS: Product[] = [
     metals: ["Platinum", "White Gold"],
     images: ["/bridal.jpg"],
     description:
-      "A collar of brilliant diamonds graduating to a central stone. The crowning piece of the bridal story.",
+      "یقه‌ای از الماس‌های برلیانت که به سنگ مرکزی می‌رسد. تکه‌ی تاج‌بخش داستان عروس.",
     stock: 3,
     isFeatured: true,
   },
@@ -231,3 +231,14 @@ export function formatPrice(price: number): string {
 export const CATEGORIES = ["Rings", "Earrings", "Bracelets", "Necklaces"];
 export const MATERIALS = ["Diamond", "Gold", "Silver"];
 export const COLLECTIONS = ["Bridal", "Aurora", "Heritage", "Celeste"];
+
+/** Persian display names — values stay English (used as filter identifiers). */
+export const FA = {
+  categories: { Rings: "انگشتر", Earrings: "گوشواره", Bracelets: "دستبند", Necklaces: "گردنبند" },
+  materials: { Diamond: "الماس", Gold: "طلا", Silver: "نقره" },
+  collections: { Bridal: "عروس", Aurora: "آرورا", Heritage: "میراث", Celeste: "سلست" },
+} as const;
+
+export const faCat = (c: string) => FA.categories[c as keyof typeof FA.categories] ?? c;
+export const faMat = (m: string) => FA.materials[m as keyof typeof FA.materials] ?? m;
+export const faColl = (c: string) => FA.collections[c as keyof typeof FA.collections] ?? c;

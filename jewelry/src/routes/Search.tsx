@@ -10,19 +10,19 @@ export function Search() {
 
   return (
     <div className="pb-20">
-      <PageHeader title="Search" crumbs={["Search"]} />
+      <PageHeader title="جستجو" crumbs={["جستجو"]} />
       <div className="mx-auto mt-8 max-w-7xl px-4 md:px-8">
         <div className="flex items-center gap-3 text-muted-foreground">
           <SearchIcon className="h-5 w-5 text-gold" />
-          <span className="font-serif text-2xl">{q ? `“${q}”` : "Search AURA"}</span>
+          <span className="font-serif text-2xl">{q ? `«${q}»` : "جستجوی AURA"}</span>
         </div>
-        <p className="mt-2 text-sm text-muted-foreground">{results.length} {results.length === 1 ? "result" : "results"}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{results.length} نتیجه</p>
 
         {results.length === 0 ? (
           <div className="card-lux mt-6 flex flex-col items-center gap-3 p-16 text-center">
-            <p className="font-serif text-2xl">No pieces found</p>
-            <p className="text-sm text-muted-foreground">Try “ring”, “gold”, or “bridal”.</p>
-            <Link to="/shop" className="btn-gold mt-2">Browse the collection</Link>
+            <p className="font-serif text-2xl">تکه‌ای پیدا نشد</p>
+            <p className="text-sm text-muted-foreground">«انگشتر»، «طلا» یا «عروس» را امتحان کنید.</p>
+            <Link to="/shop" className="btn-gold mt-2">مرور کالکشن</Link>
           </div>
         ) : (
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
