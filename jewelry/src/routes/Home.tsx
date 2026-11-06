@@ -15,23 +15,24 @@ export function Home() {
   const featured = PRODUCTS.filter((p) => p.isFeatured).slice(0, 4);
   return (
     <div>
-      {/* Hero */}
-      <section className="relative -mt-16 h-[100svh] min-h-[560px] overflow-hidden md:-mt-20">
-        <ScrollGift />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-        <div className="relative mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-4 pb-20 text-center md:px-8">
-          <span className="eyebrow animate-rise">جواهرات فاخر · تأسیس ۲۰۲۶</span>
-          <h1 className="animate-rise mt-4 font-serif text-5xl leading-tight md:text-7xl">
-            نوری، <span className="text-gold-gradient">ماندگار</span>
-          </h1>
-          <p className="animate-rise mt-5 max-w-md text-sm text-muted-foreground md:text-base">
-            تکه‌های دست‌ساز، طراحی‌شده برای پوشیدن هر روز و پاسداشت در نسل‌های آینده.
-          </p>
-          <div className="animate-rise mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link to="/shop" className="btn-gold">کاوش کالکشن <ArrowLeft className="h-4 w-4" /></Link>
-            <Link to="/shop" search={{ collection: "Bridal" }} className="btn-ghost">انتخاب عروس</Link>
+      {/* Hero — scroll-scrubbed gift reveal, pinned to viewport */}
+      <section className="relative -mt-16 md:-mt-20">
+        <ScrollGift>
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+          <div className="relative mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-4 pb-20 text-center md:px-8">
+            <span className="eyebrow animate-rise">جواهرات فاخر · تأسیس ۲۰۲۶</span>
+            <h1 className="animate-rise mt-4 font-serif text-5xl leading-tight md:text-7xl">
+              نوری، <span className="text-gold-gradient">ماندگار</span>
+            </h1>
+            <p className="animate-rise mt-5 max-w-md text-sm text-muted-foreground md:text-base">
+              تکه‌های دست‌ساز، طراحی‌شده برای پوشیدن هر روز و پاسداشت در نسل‌های آینده.
+            </p>
+            <div className="animate-rise mt-8 flex flex-wrap items-center justify-center gap-3">
+              <Link to="/shop" className="btn-gold">کاوش کالکشن <ArrowLeft className="h-4 w-4" /></Link>
+              <Link to="/shop" search={{ collection: "Bridal" }} className="btn-ghost">انتخاب عروس</Link>
+            </div>
           </div>
-        </div>
+        </ScrollGift>
       </section>
 
       {/* Featured collections */}
