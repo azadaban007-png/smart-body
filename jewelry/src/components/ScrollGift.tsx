@@ -68,15 +68,41 @@ export function ScrollGift({ children }: { children?: ReactNode }) {
             aria-hidden
             loading="eager"
             decoding="async"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-contain"
             style={{
               opacity: i === active ? 1 : 0,
               willChange: "opacity",
+              transform: "scale(0.8)",
             }}
           />
         ))}
         {/* darken slightly so overlay text stays legible */}
         <div className="absolute inset-0 bg-background/30" />
+        {/* Shine overlay — intensifies as the box opens (scroll progresses) */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 50% at 50% 45%, rgba(197,160,89,0.25) 0%, transparent 70%)",
+            opacity: 0.3 + (active / (FRAMES.length - 1)) * 0.5,
+            willChange: "opacity",
+          }}
+        />
+        {/* Moving light sweep — diagonal shine that shifts with scroll */}
+        <div
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+          style={{ willChange: "opacity" }}
+        >
+          <div
+            className="absolute inset-y-0 -left-1/3 w-1/3 skew-x-[-15deg]"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(255,245,220,0.15) 50%, transparent 100%)",
+              transform: `translateX(${(active / (FRAMES.length - 1)) * 400}%)`,
+              opacity: active > 0 && active < FRAMES.length - 1 ? 1 : 0,
+            }}
+          />
+        </div>
         {children}
       </div>
     </div>
